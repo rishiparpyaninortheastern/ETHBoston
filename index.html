@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.0/dist/web3.min.js"></script>
+
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script> -->
+    <title>Employee Information Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Open+Sans:400,700" rel="stylesheet">
+    <style>
+      body {
+          background-color: #f0f2f5;
+          font-family: 'Lato', sans-serif;
+          font-size: 16px;
+          line-height: 1.5;
+          text-align: center;
+      }
+      /* .logo {
+          display: block;
+          margin: 0 auto 30px;
+          width: 150px;
+      } */
+      form {
+          margin: 20px auto;
+          max-width: 500px;
+      }
+      label {
+          display: block;
+          margin-bottom: 10px;
+          font-weight: 700;
+          font-family: 'Open Sans', sans-serif;
+          text-align: left;
+      }
+      input[type="text"], input[type="date"] {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-sizing: border-box;
+          font-family: 'Open Sans', sans-serif;
+          font-size: 16px;
+          line-height: 1.5;
+          margin-bottom: 20px;
+      }
+      button[type="submit"] {
+          background-color: #007bff;
+          border: none;
+          color: #fff;
+          font-size: 20px;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          font-family: 'Open Sans', sans-serif;
+          transition: background-color 0.3s ease-in-out;
+      }
+      button[type="submit"]:hover {
+          background-color: #0062cc;
+      }
+      @media screen and (max-width: 768px) {
+          form {
+              margin: 10px;
+          }
+      }
+    </style>
+  </head>
+  <body>
+    
+    <img src="logo.png" alt="Logo" class="logo">
+    //<form id="employee-form">
+      <label for="company">Company Name:</label>
+      <input type="text" id="company" name="company">
+      <label for="role">Role:</label>
+      <input type="text" id="role" name="role">
+      <label for="start-date">Start Date:</label>
+      <input type="text" id="start" name="start">
+      <label for="end-date">End Date:</label>
+      <input type="text" id="end" name="end">
+      <button type="submit" onclick="connectContract ()">Submit</button>
+    </form>
+    <button onclick="connectMetamask()">CONNECT TO METAMASK</button> <br>
+    <p id="accountArea"></p>
+    <script>
+
+
+let account;
+        const connectMetamask = async () => {
+            if(window.ethereum !== "undefined") {
+                const accounts = await ethereum.request({method: "eth_requestAccounts"});
+                account = accounts[0];
+                document.getElementById("accountArea").innerHTML = account;
+            }
+        }
+
+//const web3 = new Web3('https://goerli.infura.io/v3/808044e07a404b2bae8502a413695b54');
+
+
+
+// define the ABI and address of your Solidity contract
+const connectContract = async () => {
+
+  const contractABI = [
+ {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "company",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "role",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "end",
+          "type": "uint256"
+        }
+      ],
+      "name": "addWorkExperience",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "consent",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "candidate",
+          "type": "address"
+        }
+      ],
+      "name": "getWorkExperience",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "company",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "role",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "start",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "end",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct ChainHire.WorkExperience[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "value",
+          "type": "bool"
+        }
+      ],
+      "name": "setConsent",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "workExperiences",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "company",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "role",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "end",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ];
+ const contractAddress = '0xd02907362b2e45899050fD5C27679803a7f6C75a';
+ console.log(contractAddress)
+ window.web3 = await new Web3(window.ethereum);
+ var contract = new web3.eth.Contract(contractABI, contractAddress);
+ console.log(windows.Contract);
+
+
+// // handle form submission
+// const form = document.getElementById('employee-form');
+// form.addEventListener('submit', async (event) => {
+//   event.preventDefault();
+
+ 
+  
+  
+  // // get the form data
+  // const formData = new FormData(form);
+  const company = document.getElementsByName('company')
+  const role = document.getElementsByName('role')
+  const start = document.getElementsByName('start')
+  const end = document.getElementsByName('end')
+
+  const accounts = await ethereum.request({method: "eth_requestAccounts"});
+   const accountfinal = accounts[0];
+
+
+  await contract.methods.addWorkExperience(company, role, start, end).send({ from: accountfinal });
+  
+//   // clear the form
+  form.reset();
+ }
+
+
+    </script>
+  </body>
+</html>
