@@ -11,7 +11,7 @@ contract ChainHire {
     
 
     mapping(address => WorkExperience[]) public workExperiences;
-       mapping(address => bool) public consent;
+    mapping(address => bool) public consent;
 
     function addWorkExperience(string memory company, string memory role, uint256 start, uint256 end) public {
         workExperiences[msg.sender].push(WorkExperience(company, role, start, end));
