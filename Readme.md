@@ -15,4 +15,4 @@ Smart contracts are used to enforce regulations and preferences when data is sha
 
 ### Architecture
 
-![alt text] (https://github.com/rishiparpyaninortheastern/ETHBoston/blob/main/Account_ownership_flow.png)
+![alt text](https://github.com/rishiparpyaninortheastern/ETHBoston/blob/main/Account_ownership_flow.png)
